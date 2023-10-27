@@ -1,0 +1,10 @@
+# frozen-string-literal: true
+
+require 'bundler/setup'
+
+Rake.add_rakelib '../schematic/tasks'
+
+desc "Run deployment"
+task :deploy do
+  Rake::Task['db:migrate'].invoke
+end

@@ -1,0 +1,19 @@
+version: "3.6"
+
+services:
+  # For development only
+  dev:
+    depends_on:
+      - dev.db
+    image: ${DEV_BASE_IMAGE}
+    env_file:
+      - env/cipher.env
+      - env/database.env
+      - env/secret.env
+      - env/jobs/general.env
+    working_dir: ${APP_HOME}
+    volumes:
+      - ../../src:${APP_HOME}
+    entrypoint: /bin/sh
+    stdin_open: true
+    tty: true
