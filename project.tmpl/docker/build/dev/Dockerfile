@@ -18,7 +18,11 @@ COPY . .
 
 RUN apk add --no-cache \
         freetds-dev mariadb-dev libpq-dev \
-        gcompat curl make
+        gcompat curl make  && \
+        chown -R 1001:0 ${SCHEMATIC_HOME} && \
+        chmod -R g=u ${SCHEMATIC_HOME} && \
+        chown -R 1001:0 ${APP_HOME} && \
+        chmod -R g=u ${APP_HOME}
 
 ARG project
 ARG app
@@ -54,3 +58,5 @@ LABEL org.opencontainers.image.title=${project}-${app} \
     org.metasync.base_image.repo=${base_image_repo} \
     org.metasync.base_image.tag=${base_image_tag} \
     org.metasync.base_image.name=${base_image_repo}:${base_image_tag}
+
+USER 1001
