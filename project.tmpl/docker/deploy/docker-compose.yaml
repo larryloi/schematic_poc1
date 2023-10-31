@@ -14,6 +14,7 @@ services:
     working_dir: ${APP_HOME}
     volumes:
       - ../../src:${APP_HOME}
+      - ./env/jobs:${APP_HOME}/env/jobs
     entrypoint: /bin/sh
     stdin_open: true
     tty: true

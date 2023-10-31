@@ -2,6 +2,9 @@ ARG base_image_repo=docker.io/ruby
 ARG base_image_tag
 FROM ${base_image_repo}:${base_image_tag} AS base
 
+ARG schematic_home=/home/schematic
+ENV SCHEMATIC_HOME=${schematic_home}
+
 ARG app_home=/home/schematic
 ENV APP_HOME=${app_home}
 ENV HISTFILE=${APP_HOME}/.bash_history
@@ -20,7 +23,11 @@ RUN apk add --no-cache \
         build-base gcompat && \
         \
         bundle config set without "development test" && \
-        bundle install --jobs=3 --retry=3
+        bundle install --jobs=3 --retry=3  && \
+        chown -R 1001:0 ${SCHEMATIC_HOME} && \
+        chmod -R g=u ${SCHEMATIC_HOME} && \
+        chown -R 1001:0 ${APP_HOME} && \
+        chmod -R g=u ${APP_HOME}
 
 FROM base
 
@@ -70,3 +77,5 @@ LABEL org.opencontainers.image.title=${project}-${app} \
     \
     org.metasync.ruby.version=${ruby_version} \
     org.metasync.alpine.version=${alpine_version}
+
+USER 1001
